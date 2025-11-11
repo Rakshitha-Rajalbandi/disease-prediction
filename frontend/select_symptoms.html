@@ -1,0 +1,599 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Symptoms | Smart Healthcare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <style>
+    .main-box { max-width: 600px; margin: 0 auto; }
+    .button-container { display: flex; justify-content: space-between; max-width: 600px; margin: 20px auto; }
+    .predict-btn, .back-btn {
+      padding: 10px 20px; font-size: 16px; color: white; border: none;
+      border-radius: 5px; cursor: pointer;
+    }
+    .predict-btn { background-color: #00bfff; }
+    .predict-btn:hover { background-color: #0077ff; }
+    .back-btn { background-color: #555; }
+    .back-btn:hover { background-color: #333; }
+    #result-box {
+      display: none; max-width: 600px; margin: 20px auto; padding: 20px;
+      border: 1px solid #00bfff; border-radius: 10px; background-color: #f0f8ff;
+    }
+    #result-box ul { text-align: left; padding-left: 20px; }
+    #result-box li { margin-bottom: 8px; }
+  </style>
+</head>
+
+<body>
+  <div id="particles-js"></div>
+
+  <div class="dashboard-header">
+    <h1>Select Symptoms</h1>
+    <p class="subtitle">Choose one or more symptoms for AI-based prediction</p>
+  </div>
+
+  <div class="main-box">
+    <form id="symptomForm">
+      <div class="symptom-list"></div>
+    </form>
+  </div>
+
+  <div id="result-box">
+    <h2 style="color:#0077ff;">Prediction Result</h2>
+    <p id="disease-text" style="font-weight:bold; font-size:18px;"></p>
+    <div id="advice-list"></div>
+  </div>
+
+  <div class="button-container">
+    <button class="back-btn" onclick="window.location.href='dashboard.html'">Back</button>
+    <button type="submit" form="symptomForm" class="predict-btn">Predict Disease</button>
+  </div>
+
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 80 },
+        "color": { "value": "#00bfff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "line_linked": {
+          "enable": true, "distance": 150,
+          "color": "#0077ff", "opacity": 0.3, "width": 1
+        },
+        "move": { "enable": true, "speed": 2 }
+      },
+      "interactivity": {
+        "events": { "onhover": { "enable": true, "mode": "grab" } }
+      },
+      "retina_detect": true
+    });
+
+    const symptoms = [
+      "abdominal_pain","abnormal_menstruation","acidity","acute_liver_failure","altered_sensorium","anxiety",
+      "back_pain","belly_pain","blackheads","bladder_discomfort","blister","blood_in_sputum","bloody_stool",
+      "blurred_and_distorted_vision","breathlessness","brittle_nails","bruising","burning_micturition",
+      "chest_pain","chills","cold_hands_and_feets","coma","congestion","constipation","continuous_feel_of_urine",
+      "continuous_sneezing","cough","cramps","dark_urine","dehydration","depression","diarrhoea",
+      "dischromic_patches","distention_of_abdomen","dizziness","drying_and_tingling_lips","enlarged_thyroid",
+      "excessive_hunger","extra_marital_contacts","family_history","fast_heart_rate","fatigue","fluid_overload",
+      "foul_smell_of_urine","headache","high_fever","hip_joint_pain","history_of_alcohol_consumption",
+      "increased_appetite","indigestion","inflammatory_nails","internal_itching","irregular_sugar_level",
+      "irritability","irritation_in_anus","itching","joint_pain","knee_pain","lack_of_concentration","lethargy",
+      "loss_of_appetite","loss_of_balance","loss_of_smell","malaise","mild_fever","mood_swings","movement_stiffness",
+      "mucoid_sputum","muscle_pain","muscle_wasting","muscle_weakness","nausea","neck_pain","nodal_skin_eruptions",
+      "obesity","pain_behind_the_eyes","pain_during_bowel_movements","pain_in_anal_region","painful_walking",
+      "palpitations","passage_of_gases","patches_in_throat","phlegm","polyuria","prominent_veins_on_calf",
+      "puffy_face_and_eyes","pus_filled_pimples","receiving_blood_transfusion","receiving_unsterile_injections",
+      "red_sore_around_nose","red_spots_over_body","redness_of_eyes","restlessness","runny_nose","rusty_sputum",
+      "scurring","shivering","silver_like_dusting","sinus_pressure","skin_peeling","skin_rash","slurred_speech",
+      "small_dents_in_nails","spinning_movements","spotting_urination","stiff_neck","stomach_bleeding",
+      "stomach_pain","sunken_eyes","sweating","swelled_lymph_nodes","swelling_joints","swelling_of_stomach",
+      "swollen_blood_vessels","swollen_extremeties","swollen_legs","throat_irritation","toxic_look_(typhos)",
+      "ulcers_on_tongue","unsteadiness","visual_disturbances","vomiting","watering_from_eyes","weakness_in_limbs",
+      "weakness_of_one_body_side","weight_gain","weight_loss","yellow_crust_ooze","yellow_urine",
+      "yellowing_of_eyes","yellowish_skin"
+    ];
+    const container = document.querySelector('.symptom-list');
+
+    symptoms.forEach(sym => {
+      const div = document.createElement('div');
+      div.classList.add('symptom-item');
+      div.innerHTML = `<label><input type="checkbox" name="symptom" value="${sym}"> ${sym.replace(/_/g, ' ')}</label>`;
+      container.appendChild(div);
+    });
+
+    document.getElementById('symptomForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const selected = Array.from(document.querySelectorAll('input[name="symptom"]:checked'))
+        .map(cb => cb.value);
+
+      if (selected.length === 0) {
+        alert("Please select at least one symptom.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/predictor/predict/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ symptoms: selected }) // ✅ No advice yet
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Backend response:", data);
+
+        const diseaseText = document.getElementById("disease-text");
+        const adviceContainer = document.getElementById("advice-list");
+
+        if (data.naive_bayes_prediction) {
+          diseaseText.innerText = "Predicted Disease: " + data.naive_bayes_prediction;
+          adviceContainer.innerHTML = "";
+        } else if (data.error) {
+          diseaseText.innerText = "Error: " + data.error;
+          adviceContainer.innerHTML = "";
+        } else {
+          diseaseText.innerText = "Unexpected response.";
+          adviceContainer.innerHTML = "";
+        }
+
+        document.getElementById("result-box").style.display = "block";
+
+        // ✅ Store symptoms for chatbot
+        sessionStorage.setItem("selectedSymptoms", JSON.stringify(selected));
+
+        // ✅ Ask user if they want to continue to chatbot
+        setTimeout(() => {
+          const goToChatbot = confirm("Do you want to ask the AI Doctor for advice?");
+          if (goToChatbot) {
+            window.location.href = "chatbot.html";
+          }
+        }, 500);
+
+      } catch (error) {
+        console.error("Error occurred:", error);
+        document.getElementById("disease-text").innerText = "Server error. Please try again later.";
+        document.getElementById("advice-list").innerHTML = "";
+        document.getElementById("result-box").style.display = "block";
+      }
+    });
+  </script>
+  
+</body>
+</html>  -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Select Symptoms | Smart Healthcare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <style>
+    .main-box {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    .predict-btn,
+    .back-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .predict-btn {
+      background-color: #00bfff;
+    }
+    .predict-btn:hover {
+      background-color: #0077ff;
+    }
+    .back-btn {
+      background-color: #555;
+    }
+    .back-btn:hover {
+      background-color: #333;
+    }
+    /* Symptom list grid for better layout */
+    .symptom-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .symptom-item label {
+      cursor: pointer;
+      font-size: 16px;
+      padding: 8px 10px;
+      display: block;
+      border: 1px solid #cfd8dc;
+      border-radius: 6px;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    .symptom-item input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-right: 8px;
+    }
+    .symptom-item input[type="checkbox"]:checked + label,
+    .symptom-item label:hover {
+      background-color: #e1f0ff;
+      border-color: #0077ff;
+    }
+    .predict-btn:disabled {
+      background-color: #90caf9;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-content {
+      background-color: #f0f8ff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #00bfff;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    .modal-close {
+      color: #0077ff;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .modal-close:hover {
+      color: #005bbb;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="particles-js"></div>
+
+  <div class="dashboard-header">
+    <h1>Select Symptoms</h1>
+    <p class="subtitle">Choose one or more symptoms for AI-based prediction</p>
+  </div>
+
+  <div class="main-box">
+    <form id="symptomForm">
+      <div class="symptom-list"></div>
+    </form>
+  </div>
+
+  <div class="button-container">
+    <button class="back-btn" onclick="window.location.href='dashboard.html'">Back</button>
+    <button type="submit" form="symptomForm" class="predict-btn">Predict Disease</button>
+  </div>
+
+ 
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="modal-close" class="modal-close">&times;</span>
+      <h2 style="color:#0077ff;">Prediction Result</h2>
+      <p id="modal-disease-text" style="font-weight:bold; font-size:18px;"></p>
+      <div id="modal-advice-list"></div>
+    </div>
+  </div>
+
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00bfff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: "#0077ff",
+          opacity: 0.3,
+          width: 1,
+        },
+        move: { enable: true, speed: 2 },
+      },
+      interactivity: {
+        events: { onhover: { enable: true, mode: "grab" } },
+      },
+      retina_detect: true,
+    });
+
+    const symptoms = [
+      "abdominal_pain",
+      "abnormal_menstruation",
+      "acidity",
+      "acute_liver_failure",
+      "altered_sensorium",
+      "anxiety",
+      "back_pain",
+      "belly_pain",
+      "blackheads",
+      "bladder_discomfort",
+      "blister",
+      "blood_in_sputum",
+      "bloody_stool",
+      "blurred_and_distorted_vision",
+      "breathlessness",
+      "brittle_nails",
+      "bruising",
+      "burning_micturition",
+      "chest_pain",
+      "chills",
+      "cold_hands_and_feets",
+      "coma",
+      "congestion",
+      "constipation",
+      "continuous_feel_of_urine",
+      "continuous_sneezing",
+      "cough",
+      "cramps",
+      "dark_urine",
+      "dehydration",
+      "depression",
+      "diarrhoea",
+      "dischromic_patches",
+      "distention_of_abdomen",
+      "dizziness",
+      "drying_and_tingling_lips",
+      "enlarged_thyroid",
+      "excessive_hunger",
+      "extra_marital_contacts",
+      "family_history",
+      "fast_heart_rate",
+      "fatigue",
+      "fluid_overload",
+      "foul_smell_of_urine",
+      "headache",
+      "high_fever",
+      "hip_joint_pain",
+      "history_of_alcohol_consumption",
+      "increased_appetite",
+      "indigestion",
+      "inflammatory_nails",
+      "internal_itching",
+      "irregular_sugar_level",
+      "irritability",
+      "irritation_in_anus",
+      "itching",
+      "joint_pain",
+      "knee_pain",
+      "lack_of_concentration",
+      "lethargy",
+      "loss_of_appetite",
+      "loss_of_balance",
+      "loss_of_smell",
+      "malaise",
+      "mild_fever",
+      "mood_swings",
+      "movement_stiffness",
+      "mucoid_sputum",
+      "muscle_pain",
+      "muscle_wasting",
+      "muscle_weakness",
+      "nausea",
+      "neck_pain",
+      "nodal_skin_eruptions",
+      "obesity",
+      "pain_behind_the_eyes",
+      "pain_during_bowel_movements",
+      "pain_in_anal_region",
+      "painful_walking",
+      "palpitations",
+      "passage_of_gases",
+      "patches_in_throat",
+      "phlegm",
+      "polyuria",
+      "prominent_veins_on_calf",
+      "puffy_face_and_eyes",
+      "pus_filled_pimples",
+      "receiving_blood_transfusion",
+      "receiving_unsterile_injections",
+      "red_sore_around_nose",
+      "red_spots_over_body",
+      "redness_of_eyes",
+      "restlessness",
+      "runny_nose",
+      "rusty_sputum",
+      "scurring",
+      "shivering",
+      "silver_like_dusting",
+      "sinus_pressure",
+      "skin_peeling",
+      "skin_rash",
+      "slurred_speech",
+      "small_dents_in_nails",
+      "spinning_movements",
+      "spotting_urination",
+      "stiff_neck",
+      "stomach_bleeding",
+      "stomach_pain",
+      "sunken_eyes",
+      "sweating",
+      "swelled_lymph_nodes",
+      "swelling_joints",
+      "swelling_of_stomach",
+      "swollen_blood_vessels",
+      "swollen_extremeties",
+      "swollen_legs",
+      "throat_irritation",
+      "toxic_look_(typhos)",
+      "ulcers_on_tongue",
+      "unsteadiness",
+      "visual_disturbances",
+      "vomiting",
+      "watering_from_eyes",
+      "weakness_in_limbs",
+      "weakness_of_one_body_side",
+      "weight_gain",
+      "weight_loss",
+      "yellow_crust_ooze",
+      "yellow_urine",
+      "yellowing_of_eyes",
+      "yellowish_skin",
+    ];
+    const container = document.querySelector(".symptom-list");
+
+    symptoms.forEach((sym) => {
+      const div = document.createElement("div");
+      div.classList.add("symptom-item");
+      div.innerHTML = `<label><input type="checkbox" name="symptom" value="${sym}"> ${sym.replace(
+        /_/g,
+        " "
+      )}</label>`;
+      container.appendChild(div);
+    });
+
+    // Disable predict button if no symptom selected for better UX
+    const predictBtn = document.querySelector(".predict-btn");
+    const checkboxes = document.querySelectorAll('input[name="symptom"]');
+    function togglePredictBtn() {
+      const anyChecked = Array.from(checkboxes).some((cb) => cb.checked);
+      predictBtn.disabled = !anyChecked;
+    }
+    checkboxes.forEach((cb) => cb.addEventListener("change", togglePredictBtn));
+    togglePredictBtn();
+
+    const modal = document.getElementById("modal");
+    const modalClose = document.getElementById("modal-close");
+    const modalDiseaseText = document.getElementById("modal-disease-text");
+    const modalAdviceList = document.getElementById("modal-advice-list");
+
+    modalClose.onclick = () => {
+      modal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    document.getElementById("symptomForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const selected = Array.from(
+        document.querySelectorAll('input[name="symptom"]:checked')
+      ).map((cb) => cb.value);
+
+      if (selected.length === 0) {
+        alert("Please select at least one symptom.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/predictor/predict/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ symptoms: selected }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Backend response:", data);
+
+        if (data.naive_bayes_prediction) {
+          modalDiseaseText.innerText =
+            "Predicted Disease: " + data.naive_bayes_prediction;
+          modalAdviceList.innerHTML = "";
+        } else if (data.error) {
+          modalDiseaseText.innerText = "Error: " + data.error;
+          modalAdviceList.innerHTML = "";
+        } else {
+          modalDiseaseText.innerText = "Unexpected response.";
+          modalAdviceList.innerHTML = "";
+        }
+
+        modal.style.display = "block";
+
+        // Store symptoms for chatbot
+        sessionStorage.setItem("selectedSymptoms", JSON.stringify(selected));
+
+        // Ask user if they want to continue to chatbot after 500ms
+        setTimeout(() => {
+          const goToChatbot = confirm("Do you want to ask the AI Doctor for advice?");
+          if (goToChatbot) {
+            window.location.href = "chatbot.html";
+          }
+        }, 500);
+      } catch (error) {
+        console.error("Error occurred:", error);
+        modalDiseaseText.innerText = "Server error. Please try again later.";
+        modalAdviceList.innerHTML = "";
+        modal.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

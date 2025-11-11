@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Healthcare | Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
+
+  <!-- Back Button -->
+  <button class="back-btn" onclick="window.location.href='index.html'">Back</button>
+
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <h1>Smart Healthcare Dashboard</h1>
+    <p class="subtitle">AI-powered health prediction & monitoring system</p>
+    <div id="dateTime"></div>
+  </div>
+
+  <!-- Cards -->
+  <div class="card-container">
+    <div class="card" onclick="window.location.href='select_symptoms.html'">
+      <h3>Select Symptoms</h3>
+      <p>Choose your symptoms and let the system predict possible diseases.</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='medicine_recommendation.html'">
+      <h3>Medicine Recommendation</h3>
+      <p>AI-based medicine & dosage suggestions for your predicted condition.</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='reports.html'">
+      <h3>Reports</h3>
+      <p>View your past health reports and prediction results in one place.</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='chatbot.html'">
+      <h3>AI Doctor</h3>
+      <p>Ask AI Doctor for advices.</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='mental_health.html'">
+      <h3>Mental Wellness</h3>
+      <p>Access tools and tips for managing stress & improving mental health.</p>
+    </div>
+
+   
+  </div>
+
+  <script>
+    // Particle Background
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 80 },
+        "color": { "value": "#00bfff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "line_linked": { "enable": true, "distance": 150, "color": "#0077ff", "opacity": 0.3, "width": 1 },
+        "move": { "enable": true, "speed": 2 }
+      },
+      "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } },
+      "retina_detect": true
+    });
+
+    // Live Date & Time
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('dateTime').innerHTML = now.toLocaleString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>

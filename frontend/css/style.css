@@ -1,0 +1,314 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #00121b, #000000);
+  height: 100vh;
+  overflow: hidden;
+  color: #00bfff;
+}
+
+/* 3D particle background layer */
+#particles-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at top, #000814, #000);
+}
+
+/* Welcome Page */
+.welcome-container {
+  text-align: center;
+  color: #e0f7ff;
+  background: rgba(0, 20, 40, 0.6);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 150, 255, 0.3);
+  box-shadow: 0 0 30px rgba(0, 150, 255, 0.3);
+  border-radius: 20px;
+  padding: 60px;
+  max-width: 480px;
+  margin: 15% auto;
+  transform: perspective(1000px) rotateX(10deg);
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: perspective(1000px) translateY(0) rotateX(10deg); }
+  50% { transform: perspective(1000px) translateY(-10px) rotateX(10deg); }
+}
+
+.welcome-container h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #00bfff;
+  text-shadow: 0 0 10px #00bfff;
+}
+
+.welcome-container p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #a8eaff;
+}
+
+button {
+  background: linear-gradient(90deg, #007bff, #00bfff);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0, 150, 255, 0.6);
+  transition: all 0.3s;
+}
+
+button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 35px rgba(0, 200, 255, 0.9);
+}
+
+/* Login/Signup shared */
+.form-container {
+  width: 380px;
+  margin: 10% auto;
+  text-align: center;
+  padding: 50px;
+  background: rgba(0, 15, 35, 0.7);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 150, 255, 0.3);
+  backdrop-filter: blur(10px);
+  color: #bde8ff;
+  animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background: rgba(0, 40, 70, 0.7);
+  border: 1px solid rgba(0, 200, 255, 0.3);
+  border-radius: 10px;
+  color: #00eaff;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  box-shadow: 0 0 10px #00bfff;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #00121b, #000000);
+  min-height: 100vh;
+  color: #00bfff;
+  overflow-x: hidden;
+}
+
+/* Particle Background */
+#particles-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+
+/* Back Button */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0,150,255,0.3);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,150,255,0.6);
+  border-radius: 15px;
+  padding: 12px 25px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,150,255,0.5);
+  z-index: 2;
+  transition: all 0.3s;
+}
+.back-btn:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 40px rgba(0,200,255,0.7);
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  text-align: center;
+  padding: 50px 20px 20px 20px;
+}
+.dashboard-header h1 {
+  font-size: 42px;
+  text-shadow: 0 0 20px #00bfff;
+}
+.dashboard-header .subtitle {
+  font-size: 18px;
+  color: #a0e2ff;
+  margin-top: 5px;
+}
+#dateTime {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #80e1ff;
+  background: rgba(0,20,40,0.6);
+  padding: 10px 20px;
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 0 12px rgba(0,150,255,0.5);
+}
+
+/* Cards Container */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin: 50px auto;
+  width: 90%;
+  max-width: 1400px;
+}
+
+/* Big Wild Cards */
+.card {
+  background: rgba(0,30,60,0.85);
+  border: 2px solid rgba(0,150,255,0.4);
+  border-radius: 25px;
+  padding: 40px 30px;
+  width: 400px;
+  min-height: 250px;
+  color: #00eaff;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 25px rgba(0,150,255,0.4);
+  text-align: center;
+  transform-style: preserve-3d;
+  word-wrap: break-word;
+  animation: floatCard 5s ease-in-out infinite;
+}
+.card:hover {
+  transform: translateY(-15px) rotateY(10deg) scale(1.08);
+  box-shadow: 0 0 50px rgba(0,200,255,0.8);
+}
+.card h3 {
+  margin-bottom: 15px;
+  font-size: 22px;
+  color: #00bfff;
+  text-shadow: 0 0 15px #00bfff;
+}
+.card p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #bdeaff;
+}
+
+/* Floating animation */
+@keyframes floatCard {
+  0%,100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Responsive: Mobile */
+@media screen and (max-width: 480px) {
+  .card-container { flex-direction: column; gap: 30px; }
+  .card { width: 90%; min-height: 220px; padding: 30px 20px; }
+  .dashboard-header h1 { font-size: 32px; }
+  .dashboard-header .subtitle { font-size: 16px; }
+}
+
+/* ===== Select Symptoms Page ===== */
+.symptom-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #aeeaff;
+  font-size: 15px;
+}
+
+.symptom-item {
+  background: rgba(0, 30, 60, 0.7);
+  border: 1px solid rgba(0, 150, 255, 0.3);
+  border-radius: 10px;
+  padding: 8px 12px;
+  transition: 0.3s ease;
+}
+
+.symptom-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 15px rgba(0,200,255,0.5);
+}
+
+.main-box {
+  background: rgba(0, 20, 40, 0.8);
+  border: 1px solid rgba(0, 150, 255, 0.4);
+  box-shadow: 0 0 25px rgba(0, 150, 255, 0.3);
+  border-radius: 20px;
+  width: 80%;
+  max-width: 900px;
+  height: 400px;
+  margin: 40px auto;
+  padding: 25px;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+}
+
+/* Scrollbar */
+.main-box::-webkit-scrollbar {
+  width: 8px;
+}
+.main-box::-webkit-scrollbar-thumb {
+  background: #00bfff;
+  border-radius: 10px;
+}
+
+/* Predict Button */
+.predict-box {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.predict-btn {
+  background: linear-gradient(90deg, #007bff, #00bfff);
+  border: none;
+  color: white;
+  padding: 12px 35px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0, 150, 255, 0.5);
+  transition: 0.3s;
+}
+
+.predict-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(0, 200, 255, 0.8);
+}

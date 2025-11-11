@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Doctor Chatbot</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8faff;
+      padding: 20px;
+    }
+
+    .chat-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+
+    .chat-bubble {
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 80%;
+      white-space: pre-line;
+    }
+
+    .user {
+      background-color: #00bfff;
+      color: white;
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .bot {
+      background-color: #e0f7ff;
+      color: #333;
+      align-self: flex-start;
+    }
+
+    .chat-log {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chat-container">
+    <h2>AI Doctor Chatbot</h2>
+    <div class="chat-log" id="chatLog">
+      <!-- Chat bubbles will appear here -->
+    </div>
+    <button class="back-btn" onclick="window.location.href='select_symptoms.html'">← Back to Symptoms</button>
+  </div>
+
+  <script>
+    const symptoms = JSON.parse(sessionStorage.getItem("selectedSymptoms") || "[]");
+
+    if (symptoms.length === 0) {
+      document.getElementById("chatLog").innerHTML = `
+        <div class="chat-bubble bot">No symptoms found. Please go back and select symptoms first.</div>
+      `;
+    } else {
+      const userMessage = `I am experiencing ${symptoms.join(", ").replace(/_/g, " ")}. What could be the cause and what should I do?`;
+
+      // Show user message
+      const userBubble = document.createElement("div");
+      userBubble.className = "chat-bubble user";
+      userBubble.innerText = userMessage;
+      document.getElementById("chatLog").appendChild(userBubble);
+
+      // Send to backend
+      fetch("http://127.0.0.1:8000/predictor/predict/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          symptoms: symptoms,
+          include_advice: true
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const botBubble = document.createElement("div");
+        botBubble.className = "chat-bubble bot";
+
+        if (data.medical_advice && data.medical_advice !== "Advice not requested.") {
+          botBubble.innerText = `👩‍⚕️ AI Doctor:\n${data.medical_advice}`;
+        } else {
+          botBubble.innerText = "👩‍⚕️ AI Doctor: Sorry, no advice available.";
+        }
+
+        document.getElementById("chatLog").appendChild(botBubble);
+      })
+      .catch(error => {
+        const errorBubble = document.createElement("div");
+        errorBubble.className = "chat-bubble bot";
+        errorBubble.innerText = "👩‍⚕️ AI Doctor: Server error. Please try again later.";
+        document.getElementById("chatLog").appendChild(errorBubble);
+        console.error("Chatbot error:", error);
+      });
+    }
+  </script>
+</body>
+</html>

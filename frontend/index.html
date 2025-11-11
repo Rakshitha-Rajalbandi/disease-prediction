@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome | Smart Healthcare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <div class="welcome-container">
+    <h1>Smart Healthcare Dashboard</h1>
+    <p>Your AI-powered Disease Prediction & Health Guide</p>
+    <button onclick="window.location.href='login.html'">Get Started</button>
+  </div>
+
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 70 },
+        "color": { "value": "#00bfff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.6 },
+        "size": { "value": 3 },
+        "line_linked": { "enable": true, "distance": 150, "color": "#0077ff", "opacity": 0.4, "width": 1 },
+        "move": { "enable": true, "speed": 2 }
+      },
+      "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } },
+      "retina_detect": true
+    });
+  </script>
+</body>
+</html>

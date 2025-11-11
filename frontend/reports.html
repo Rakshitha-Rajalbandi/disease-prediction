@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Health Reports | Smart Healthcare</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #001428;
+      color: #aeeaff;
+      margin: 20px;
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      top: 0;
+      left: 0;
+    }
+    .back-btn {
+      margin-bottom: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0077ff;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+    .back-btn:hover {
+      background-color: #005bbb;
+    }
+    h1 {
+      color: #00bfff;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .report-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(0, 20, 40, 0.85);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 25px rgba(0, 150, 255, 0.4);
+      overflow-y: auto;
+      max-height: 600px;
+    }
+    .report-item {
+      background: rgba(0, 40, 80, 0.7);
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 15px rgba(0, 130, 255, 0.3);
+    }
+    .report-item h3 {
+      color: #00bfff;
+      margin: 0 0 8px 0;
+    }
+    .report-item p {
+      margin: 4px 0;
+      line-height: 1.4;
+    }
+    .report-meta {
+      font-size: 13px;
+      color: #80d2ff;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="particles-js"></div>
+
+  <button class="back-btn" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+
+  <h1>User Health Reports</h1>
+
+  <div class="report-container" id="reportContainer">
+    <p>Loading reports...</p>
+  </div>
+
+  <!-- <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00bfff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: { enable: true, distance: 150, color: "#0077ff", opacity: 0.3, width: 1 },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: { events: { onhover: { enable: true, mode: "grab" } } },
+      retina_detect: true
+    });
+
+    const reportContainer = document.getElementById("reportContainer");
+
+    async function fetchReports() {
+      reportContainer.innerHTML = "<p>Loading reports...</p>";
+      try {
+        const response = await fetch('http://127.0.0.1:8000/predictor/reports/', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const reports = await response.json();
+        if (reports.length === 0) {
+          reportContainer.innerHTML = "<p>No health reports available.</p>";
+          return;
+        }
+        reportContainer.innerHTML = "";
+        reports.forEach(report => {
+          const reportEl = document.createElement("div");
+          reportEl.classList.add("report-item");
+          reportEl.innerHTML = `
+            <h3>Disease: ${report.disease}</h3>
+            <p><strong>Date:</strong> ${new Date(report.date).toLocaleString()}</p>
+            <p><strong>Symptoms:</strong> ${report.symptoms.join(", ")}</p>
+            <p><strong>Medicines:</strong> ${(report.medicines || report.medicine || []).join(", ")}</p>
+            <p><strong>Notes:</strong> ${report.notes}</p>
+          `;
+          reportContainer.appendChild(reportEl);
+        });
+      } catch (error) {
+        reportContainer.innerHTML = `<p style="color: red;">Failed to load reports: ${error.message}</p>`;
+      }
+    }
+
+    fetchReports();
+  </script> -->
+
+
+  <script>
+  const reportContainer = document.getElementById("reportContainer");
+
+  async function fetchReports() {
+    reportContainer.innerHTML = "<p>Loading reports...</p>";
+    try {
+      const response = await fetch('http://127.0.0.1:8000/predictor/reports/', { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const reports = await response.json();
+      if (reports.length === 0) {
+        reportContainer.innerHTML = "<p>No health reports available.</p>";
+        return;
+      }
+      reportContainer.innerHTML = "";
+      reports.forEach(report => {
+        // Create HTML for medicines: show name and dosage only
+        const medsHtml = report.medicines.map(med =>
+          `<div><strong>${med.name}</strong> (${med.dosage})</div>`
+        ).join("");
+
+        const reportEl = document.createElement("div");
+        reportEl.classList.add("report-item");
+        reportEl.innerHTML = `
+          <h3>Disease: ${report.disease}</h3>
+          <p><strong>Date:</strong> ${new Date(report.date).toLocaleString()}</p>
+          <p><strong>Symptoms:</strong> ${report.symptoms.join(", ")}</p>
+          <div><strong>Medicines:</strong><br>${medsHtml}</div>
+        `;
+        reportContainer.appendChild(reportEl);
+      });
+    } catch (error) {
+      reportContainer.innerHTML = `<p style="color: red;">Failed to load reports: ${error.message}</p>`;
+    }
+  }
+
+  fetchReports();
+</script>
+
+</body>
+</html>
