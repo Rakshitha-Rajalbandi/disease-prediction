@@ -22,5 +22,5 @@ from django.http import HttpResponse
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('predictor/', include('predictor.urls')),
-    path('', lambda request: HttpResponse("Disease Prediction Backend is Running 🚀")),
+    path('', lambda request: HttpResponse("Go to /predictor/ to see the app")),
 ]
