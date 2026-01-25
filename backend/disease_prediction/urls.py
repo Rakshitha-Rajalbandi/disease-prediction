@@ -22,5 +22,15 @@ from django.http import HttpResponse
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('predictor/', include('predictor.urls')),
-    path('', lambda request: HttpResponse("Go to /predictor/ to see the app")),
+    path('', views.index),
+    path('dashboard/', views.dashboard),
+    path('select_symptoms/', views.select_symptoms),
+    path('blank/', views.blank),
+    path('chatbot/', views.chatbot),
+    path('dietary_plans/', views.dietary_plans),
+    path('login/', views.login),
+    path('medinine_recommendation/', views.medinine_recommendation),
+    path('mental_health/', views.mental_health),
+    path('reports/', views.reports),
+    path('signup/', views.signup),
 ]
