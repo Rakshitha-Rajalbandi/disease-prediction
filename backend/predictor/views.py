@@ -7,6 +7,8 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
+from django.shortcuts import render
+
 
 
 reports_cache = []  # Global in-memory reports list
@@ -273,42 +275,42 @@ def reports_list(request):
     return JsonResponse(reports_cache, safe=False)
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'predictor/index.html')
 
 # add similar views for other pages if needed
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    return render(request, 'predictor/dashboard.html')
 
 def select_symptoms(request):
-    return render(request, 'select_symptoms.html')
+    return render(request, 'predictor/select_symptoms.html')
 
 
 def medicine_recommendation(request):
-    return render(request, 'medicine_recommendation.html')
+    return render(request, 'predictor/medicine_recommendation.html')
 
 
 def blank(request):
-    return render(request, 'blank.html')
+    return render(request, 'predictor/blank.html')
 
 
 def chatbot(request):
-    return render(request, 'chatbot.html')
+    return render(request, 'predictor/chatbot.html')
 
 
 def dietary_plans(request):
-    return render(request, 'dietary_plans.html')
+    return render(request, 'predictor/dietary_plans.html')
 
 
 def login(request):
-    return render(request, 'login.html')
+    return render(request, 'predictor/login.html')
 
 
 def mental_health(request):
-    return render(request, 'mental_health.html')
+    return render(request, 'predictor/mental_health.html')
 
 
 def reports(request):
-    return render(request, 'reports.html')
+    return render(request, 'predictor/reports.html')
 
 
 def signup(request):

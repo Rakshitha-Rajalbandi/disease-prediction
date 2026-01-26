@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Medicine Recommendation | Smart Healthcare</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}">
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <style>
     /* Scrollable Symptoms List */
@@ -93,7 +94,7 @@
   <div id="particles-js"></div>
 
   <!-- Back Button -->
-  <button class="back-btn" onclick="window.location.href='dashboard.html'">Back</button>
+  <button class="back-btn" onclick="window.location.href='/dashboard/'">Back</button>
 
   <!-- Page Header -->
   <div class="dashboard-header">

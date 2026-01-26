@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Doctor Chatbot</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -69,7 +70,7 @@
     <div class="chat-log" id="chatLog">
       <!-- Chat bubbles will appear here -->
     </div>
-    <button class="back-btn" onclick="window.location.href='select_symptoms.html'">← Back to Symptoms</button>
+    <button class="back-btn" onclick="window.location.href='/select_symptoms/'">← Back to Symptoms</button>
   </div>
 
   <script>

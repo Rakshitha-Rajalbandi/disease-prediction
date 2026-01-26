@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up | Smart Healthcare</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}">
 </head>
 <body class="form-page">
   <div class="form-container">
@@ -12,7 +13,7 @@
     <input type="text" placeholder="Full Name" required>
     <input type="email" placeholder="Email" required>
     <input type="password" placeholder="Password" required>
-    <button onclick="window.location.href='dashboard.html'">Sign Up</button>
+    <button onclick="window.location.href='/dashboard/'">Sign Up</button>
     <p>Already have an account? <a href="login.html">Login</a></p>
   </div>
 </body>

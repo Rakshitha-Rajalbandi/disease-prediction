@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Healthcare | Dashboard</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}">
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
@@ -13,7 +14,7 @@
   <div id="particles-js"></div>
 
   <!-- Back Button -->
-  <button class="back-btn" onclick="window.location.href='index.html'">Back</button>
+  <button class="back-btn" onclick="window.location.href='/index/'">Back</button>
 
   <!-- Dashboard Header -->
   <div class="dashboard-header">
@@ -24,27 +25,27 @@
 
   <!-- Cards -->
   <div class="card-container">
-    <div class="card" onclick="window.location.href='select_symptoms.html'">
+    <div class="card" onclick="window.location.href='/select_symptoms/'">
       <h3>Select Symptoms</h3>
       <p>Choose your symptoms and let the system predict possible diseases.</p>
     </div>
 
-    <div class="card" onclick="window.location.href='medicine_recommendation.html'">
+    <div class="card" onclick="window.location.href='/medicine_recommendation/'">
       <h3>Medicine Recommendation</h3>
       <p>AI-based medicine & dosage suggestions for your predicted condition.</p>
     </div>
 
-    <div class="card" onclick="window.location.href='reports.html'">
+    <div class="card" onclick="window.location.href='/reports/'">
       <h3>Reports</h3>
       <p>View your past health reports and prediction results in one place.</p>
     </div>
 
-    <div class="card" onclick="window.location.href='chatbot.html'">
+    <div class="card" onclick="window.location.href='/chatbot/'">
       <h3>AI Doctor</h3>
       <p>Ask AI Doctor for advices.</p>
     </div>
 
-    <div class="card" onclick="window.location.href='mental_health.html'">
+    <div class="card" onclick="window.location.href='/mental_health/'">
       <h3>Mental Wellness</h3>
       <p>Access tools and tips for managing stress & improving mental health.</p>
     </div>

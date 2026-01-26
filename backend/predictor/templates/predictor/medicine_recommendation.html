@@ -1,171 +1,11 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Medicine Recommendations</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f8ff;
-      margin: 0;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      text-align: center;
-      color: #0077ff;
-    }
-
-    select {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .medicine-box {
-      background-color: #e6f2ff;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #0077ff;
-    }
-
-    .medicine-box ul {
-      padding-left: 20px;
-    }
-
-    .back-btn {
-      margin-top: 30px;
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background-color: #555;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .back-btn:hover {
-      background-color: #333;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <h1>Medicine Recommendations</h1>
-
-    <select id="diseaseSelect">
-      <option value="">-- Select a Disease --</option>
-    </select>
-
-    <div class="medicine-box" id="medicineBox" style="display:none;">
-      <h3>Recommended Medicines:</h3>
-      <ul id="medicineList"></ul>
-    </div>
-
-    <button class="back-btn" onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
-  </div>
-
-  <script>
-    const diseaseData = {
-      "Vertigo": ["Vestibular rehabilitation exercises", "Meclizine"],
-      "AIDS": ["Antiretroviral therapy (ART)"],
-      "Acne": ["Benzoyl peroxide", "Salicylic acid", "Topical retinoids"],
-      "Alcoholic hepatitis": ["Corticosteroids", "Pentoxifylline"],
-      "Allergy": ["Antihistamines", "Corticosteroids"],
-      "Arthritis": ["NSAIDs", "DMARDs"],
-      "Bronchial Asthma": ["Inhaled corticosteroids", "Bronchodilators"],
-      "Cervical spondylosis": ["NSAIDs", "Muscle relaxants"],
-      "Chicken pox": ["Acyclovir", "Pain relievers"],
-      "Chronic cholestasis": ["Ursodeoxycholic acid"],
-      "Common Cold": ["Decongestants", "Pain relievers"],
-      "Dengue": ["Supportive care", "Acetaminophen (avoid NSAIDs)"],
-      "Diabetes": ["Metformin", "Insulin"],
-      "Hemorrhoids (Piles)": ["Topical steroids", "Pain relievers", "Fiber supplements"],
-      "Drug Reaction": ["Discontinue offending drug", "Antihistamines", "Corticosteroids"],
-      "Fungal infection": ["Antifungal creams", "Oral antifungals"],
-      "GERD": ["Proton pump inhibitors", "H2 blockers"],
-      "Gastroenteritis": ["Oral rehydration salts", "Antiemetics"],
-      "Heart attack": ["Aspirin", "Nitroglycerin", "Beta blockers"],
-      "Hepatitis A": ["Supportive care", "Rest"],
-      "Hepatitis B": ["Antiviral medications"],
-      "Hepatitis C": ["Direct-acting antivirals"],
-      "Hepatitis D": ["Interferon alpha"],
-      "Hepatitis E": ["Supportive care"],
-      "Hypertension": ["ACE inhibitors", "Calcium channel blockers", "Diuretics"],
-      "Hyperthyroidism": ["Methimazole", "Beta blockers"],
-      "Hypoglycemia": ["Glucose tablets", "IV glucose"],
-      "Hypothyroidism": ["Levothyroxine"],
-      "Impetigo": ["Topical antibiotics", "Oral antibiotics"],
-      "Jaundice": ["Treat underlying cause", "Supportive care"],
-      "Malaria": ["Chloroquine", "Artemisinin-based combination therapy"],
-      "Migraine": ["Triptans", "NSAIDs", "Anti-nausea drugs"],
-      "Osteoarthritis": ["NSAIDs", "Acetaminophen", "Physical therapy"],
-      "Paralysis (brain hemorrhage)": ["Supportive care", "Rehabilitation therapy"],
-      "Peptic ulcer disease": ["Proton pump inhibitors", "Antibiotics for H. pylori"],
-      "Pneumonia": ["Antibiotics", "Supportive care"],
-      "Psoriasis": ["Topical corticosteroids", "Vitamin D analogues", "Phototherapy"],
-      "Tuberculosis": ["Isoniazid", "Rifampin", "Ethambutol", "Pyrazinamide"],
-      "Typhoid": ["Ciprofloxacin", "Azithromycin"],
-      "Urinary tract infection": ["Trimethoprim/sulfamethoxazole", "Nitrofurantoin"],
-      "Varicose veins": ["Compression stockings", "Pain relievers"]
-    };
-
-    const diseaseSelect = document.getElementById("diseaseSelect");
-    const medicineBox = document.getElementById("medicineBox");
-    const medicineList = document.getElementById("medicineList");
-
-    Object.keys(diseaseData).forEach(disease => {
-      const option = document.createElement("option");
-      option.value = disease;
-      option.textContent = disease;
-      diseaseSelect.appendChild(option);
-    });
-
-    diseaseSelect.addEventListener("change", () => {
-      const selected = diseaseSelect.value;
-      if (selected && diseaseData[selected]) {
-        medicineList.innerHTML = "";
-        diseaseData[selected].forEach(med => {
-          const li = document.createElement("li");
-          li.textContent = med;
-          medicineList.appendChild(li);
-        });
-        medicineBox.style.display = "block";
-      } else {
-        medicineBox.style.display = "none";
-      }
-    });
-  </script>
-</body>
-</html> -->
-
-
-
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Medicine Recommendation | Smart Healthcare</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="{% static 'predictor/css/style.css' %}">
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <style>
     /* Scrollable Symptoms List */
@@ -254,7 +94,7 @@
   <div id="particles-js"></div>
 
   <!-- Back Button -->
-  <button class="back-btn" onclick="window.location.href='dashboard.html'">Back</button>
+  <button class="back-btn" onclick="window.location.href='/dashboard/'">Back</button>
 
   <!-- Page Header -->
   <div class="dashboard-header">
